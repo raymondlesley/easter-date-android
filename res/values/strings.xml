@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Easter Date!</string>
+    <string name="app_name">Easter Date Calculator</string>
+<string name="easter_date">Easter Date: </string>
+<string name="march">March</string>
+<string name="april">April</string>
+</resources>
