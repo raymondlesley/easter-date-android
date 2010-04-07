@@ -1,5 +1,7 @@
 package uk.co.thelesleys.easterdate;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,7 +11,7 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 public class FindEasterDate extends Activity {
 	EditText edittext;
@@ -75,8 +77,9 @@ public class FindEasterDate extends Activity {
 	    /*
 	     * Init state
 	     */
-	    edittext.setText("2010");
-	    CalcEasterDate(2010);
+	    int year = new Date().getYear() + 1900;
+	    edittext.setText(Integer.toString(year));
+	    CalcEasterDate(year);
     }
 
     final void CalcEasterDate(int year) {
