@@ -2,7 +2,9 @@
 <resources>
     <string name="hello">Hello World, Easter Date!</string>
     <string name="app_name">Easter Date Calculator</string>
-<string name="easter_date">Easter Date: </string>
+<string name="shrove_tuesday">Shrove Tuesday: </string>
+<string name="easter">Easter: </string>
+<string name="february">February</string>
 <string name="march">March</string>
 <string name="april">April</string>
 </resources>
