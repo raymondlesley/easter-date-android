@@ -1,6 +1,7 @@
 package uk.co.thelesleys.easterdate;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,7 +16,8 @@ import android.widget.TextView;
 
 public class FindEasterDate extends Activity {
 	EditText edittext;
-	TextView message;
+	TextView shrove_value;
+	TextView easter_value;
 
     /** Called when the activity is first created. */
     @Override
@@ -23,10 +25,11 @@ public class FindEasterDate extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-	    edittext = (EditText) findViewById(R.id.edittext);
-	    message = (TextView)findViewById(R.id.label);
+    	edittext = (EditText)findViewById(R.id.edittext);
+    	shrove_value = (TextView)findViewById(R.id.shrovevalue);
+    	easter_value = (TextView)findViewById(R.id.eastervalue);
 
-	    /*
+    	/*
 	     * 
 	     */
 	    edittext.setOnKeyListener(new OnKeyListener() {
@@ -38,7 +41,7 @@ public class FindEasterDate extends Activity {
 //	              Toast.makeText(FindEasterDate.this, edittext.getText(), Toast.LENGTH_SHORT).show();
 		        	String yeartext = edittext.getText().toString();
 		        	int year = Integer.parseInt(yeartext);
-		            CalcEasterDate(year);
+		            reCalculate(year);
 	              return true;
 	            }
 	            return false;
@@ -56,7 +59,7 @@ public class FindEasterDate extends Activity {
 //	        	String message = "Beep Bop: " + newyeartext;
 //	            Toast.makeText(OpenHelloFormStuff.this, message, Toast.LENGTH_SHORT).show();
 	            edittext.setText(newyeartext);
-	            CalcEasterDate(newyear);
+	            reCalculate(newyear);
 	        }
 	    });
 
@@ -71,18 +74,29 @@ public class FindEasterDate extends Activity {
 //	        	String message = "Beep Bop: " + newyeartext;
 //	            Toast.makeText(OpenHelloFormStuff.this, message, Toast.LENGTH_SHORT).show();
 	            edittext.setText(newyeartext);
-	            CalcEasterDate(newyear);
+	            reCalculate(newyear);
 	        }
 	    });
+
 	    /*
 	     * Init state
 	     */
-	    int year = new Date().getYear() + 1900;
+	    final int year = Calendar.getInstance().get(Calendar.YEAR);
 	    edittext.setText(Integer.toString(year));
-	    CalcEasterDate(year);
+	    reCalculate(year);
     }
 
-    final void CalcEasterDate(int year) {
+    final void reCalculate(int year) {
+    	Calendar date = calculateEasterDate(year);  // date = Easter
+    	final String easter_text = formatDate(date);
+       	easter_value.setText(easter_text);
+
+       	date.add(Calendar.DATE, -47);  // date = Shrove Tuesday
+       	final String shrove_date = formatDate(date);
+       	shrove_value.setText(shrove_date);
+    }
+
+    final Calendar calculateEasterDate(int year) {
     	/*
     	 * Anonymous Gregorian Algorithm
     	 * http://en.wikipedia.org/wiki/Computus#Anonymous_Gregorian_algorithm
@@ -102,13 +116,7 @@ public class FindEasterDate extends Activity {
     	int month = (h + L - 7 * m + 114)  /31;
     	int day = ((h + L - 7 * m + 114) % 31) + 1;
 
-    	final String march = getString(R.string.march);
-    	final String april = getString(R.string.april); 
-    	final String easterDate = getString(R.string.easter_date);
-
-    	String date = month == 3 ? march : april; 
-    	String result = easterDate + " " + day + getStNdTh(day) + " " + date + " " + Integer.toString(year);
-    	message.setText(result);
+    	return new GregorianCalendar(year, month - 1, day, 0, 0, 0);
     }
 
     final String getStNdTh(int day) {
@@ -122,5 +130,24 @@ public class FindEasterDate extends Activity {
     	else {
     		return "th";
     	}
+    }
+    
+    final String formatDate(Calendar date) {    	
+    	final String month_name[] = {
+    			"",
+    			getString(R.string.february),
+    			getString(R.string.march),
+    			getString(R.string.april),
+    			"",
+    			"",
+    			"",
+    			"",
+    			"",
+    			"",
+    			"",
+    			""
+    		};
+
+    	return "" + date.get(Calendar.DATE)+ getStNdTh(date.get(Calendar.DATE)) + " " + month_name[date.get(Calendar.MONTH)];
     }
 }
