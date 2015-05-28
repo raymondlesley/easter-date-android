@@ -1,0 +1,1 @@
+Simple Android app to calculate the date of Easter for any year in the Gregorian calendar.
