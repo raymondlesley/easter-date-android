@@ -49,6 +49,12 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
+            R.id.action_about -> {
+                Snackbar.make(binding.root, "What about it?", Snackbar.LENGTH_LONG)
+                    .setAnchorView(R.id.fab)
+                    .setAction("Action", null).show()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

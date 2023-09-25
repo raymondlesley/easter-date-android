@@ -57,54 +57,48 @@ class FirstFragment : Fragment() {
         return GregorianCalendar(year, month - 1, day, 0, 0, 0)
     }
 
-    private fun recalcDates(view: View, year: Int) {
+    private fun recalcDates(year: Int) {
         val dateEaster = calculateEasterDate(year)
-//        Snackbar.make(view, "Easter = ", date.toString(), Snackbar.LENGTH_LONG)
-//            .setAnchorView(R.id.plus_button_first)
-//            .setAction("Action", null).show()
         val formatter = SimpleDateFormat("d MMM")
         val textEaster = formatter.format(dateEaster.time)
         binding.eastervalue.text = textEaster // .setText(textEaster)
         val dateShroveTuesday = dateEaster.clone() as Calendar
         dateShroveTuesday.add(Calendar.DATE, -47)
         val textShroveTuesday = formatter.format(dateShroveTuesday.time)
-        binding.shrovevalue.text = textShroveTuesday // .setText(textShroveTuesday)
+        binding.shrovevalue.text = textShroveTuesday
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(vwFragment: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(vwFragment, savedInstanceState)
 
         val today = Calendar.getInstance()
-        val year = today.get(YEAR)
-        val txt = year.toString()
+        val current_year = today.get(YEAR)
+        val txt = current_year.toString()
         binding.edittext.setText(txt)
-        recalcDates(view, year)
+        recalcDates(current_year)
 
-        binding.buttonFirst.setOnClickListener {view ->
+        binding.buttonFirst.setOnClickListener { _ ->
             var year = binding.edittext.text.toString().toInt()
             year -= 1
             binding.edittext.setText(year.toString())
-            recalcDates(view, year)
+            recalcDates(year)
         }
-//        binding.plusButtonFirst.setOnClickListener { view ->
-//            Snackbar.make(view, "Plus Button Pressed", Snackbar.LENGTH_LONG)
-//                .setAnchorView(R.id.plus_button_first)
-//                .setAction("Action", null).show()
-//        }
-        binding.plusButtonFirst.setOnClickListener {view ->
+        binding.plusButtonFirst.setOnClickListener { _ ->
             var year = binding.edittext.text.toString().toInt()
             year += 1
             binding.edittext.setText(year.toString())
-            recalcDates(view, year)
+            recalcDates(year)
         }
-        binding.edittext.setOnKeyListener { view, keyCode, event ->
+        binding.edittext.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
-                var year = binding.edittext.text.toString().toInt()
-                recalcDates(view, year)
-                //return@OnKeyListener true
+                val year = binding.edittext.text.toString().toInt()
+                recalcDates(year)
+                true // handled
             }
-            false
+            else {
+                false // not handled
+            }
         }
     }
 
